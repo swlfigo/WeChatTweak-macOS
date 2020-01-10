@@ -15,7 +15,7 @@
 #import "AlfredManager.h"
 #import "WTConfigManager.h"
 #import "RecallCacheManager.h"
-
+#import <JRSwizzle/JRSwizzle.h>
 // Global Function
 static NSString *(*original_NSHomeDirectory)(void);
 static NSArray<NSString *> *(*original_NSSearchPathForDirectoriesInDomains)(NSSearchPathDirectory directory, NSSearchPathDomainMask domainMask, BOOL expandTilde);
@@ -53,10 +53,10 @@ static void __attribute__((constructor)) tweak(void) {
     // Method Swizzling
     class_addMethod(objc_getClass("AppDelegate"), @selector(applicationDockMenu:), method_getImplementation(class_getInstanceMethod(objc_getClass("AppDelegate"), @selector(tweak_applicationDockMenu:))), "@:@");
     [objc_getClass("AppDelegate") jr_swizzleMethod:NSSelectorFromString(@"applicationDidFinishLaunching:") withMethod:@selector(tweak_applicationDidFinishLaunching:) error:nil];
-    [objc_getClass("LogoutCGI") jr_swizzleMethod:NSSelectorFromString(@"sendLogoutCGIWithCompletion:") withMethod:@selector(tweak_sendLogoutCGIWithCompletion:) error:nil];
-    [objc_getClass("LogoutCGI") jr_swizzleMethod:NSSelectorFromString(@"FFVCRecvDataAddDataToMsgChatMgrRecvZZ:") withMethod:@selector(tweak_sendLogoutCGIWithCompletion:) error:nil];
-    [objc_getClass("AccountService") jr_swizzleMethod:NSSelectorFromString(@"onAuthOKOfUser:withSessionKey:withServerId:autoAuthKey:isAutoAuth:") withMethod:@selector(tweak_onAuthOKOfUser:withSessionKey:withServerId:autoAuthKey:isAutoAuth:) error:nil];
-    [objc_getClass("AccountService") jr_swizzleMethod:NSSelectorFromString(@"ManualLogout") withMethod:@selector(tweak_ManualLogout) error:nil];
+//    [objc_getClass("LogoutCGI") jr_swizzleMethod:NSSelectorFromString(@"sendLogoutCGIWithCompletion:") withMethod:@selector(tweak_sendLogoutCGIWithCompletion:) error:nil];
+//    [objc_getClass("LogoutCGI") jr_swizzleMethod:NSSelectorFromString(@"FFVCRecvDataAddDataToMsgChatMgrRecvZZ:") withMethod:@selector(tweak_sendLogoutCGIWithCompletion:) error:nil];
+//    [objc_getClass("AccountService") jr_swizzleMethod:NSSelectorFromString(@"onAuthOKOfUser:withSessionKey:withServerId:autoAuthKey:isAutoAuth:") withMethod:@selector(tweak_onAuthOKOfUser:withSessionKey:withServerId:autoAuthKey:isAutoAuth:) error:nil];
+//    [objc_getClass("AccountService") jr_swizzleMethod:NSSelectorFromString(@"ManualLogout") withMethod:@selector(tweak_ManualLogout) error:nil];
     [objc_getClass("AccountService") jr_swizzleMethod:NSSelectorFromString(@"FFAddSvrMsgImgVCZZ") withMethod:@selector(tweak_ManualLogout) error:nil];
     [objc_getClass("MessageService") jr_swizzleMethod:NSSelectorFromString(@"onRevokeMsg:") withMethod:@selector(tweak_onRevokeMsg:) error:nil];
     [objc_getClass("MessageService") jr_swizzleMethod:NSSelectorFromString(@"FFToNameFavChatZZ:") withMethod:@selector(tweak_onRevokeMsg:) error:nil];
@@ -71,6 +71,10 @@ static void __attribute__((constructor)) tweak(void) {
     [objc_getClass("MMMessageCellView") jr_swizzleMethod:NSSelectorFromString(@"populateWithMessage:") withMethod:@selector(tweak_populateWithMessage:) error:nil];
     [objc_getClass("MMMessageCellView") jr_swizzleMethod:NSSelectorFromString(@"layout") withMethod:@selector(tweak_layout) error:nil];
     
+    //      微信消息同步
+    [objc_getClass("MessageService") jr_swizzleMethod:NSSelectorFromString(@"OnSyncBatchAddFunctionMsgs:isFirstSync:") withMethod:@selector(tweak_OnSyncBatchAddFunctionMsgs:isFirstSync:) error:nil];
+    [objc_getClass("MessageService") jr_swizzleMethod:NSSelectorFromString(@"FFImgToOnFavInfoInfoVCZZ:isFirstSync:") withMethod:@selector(tweak_FFImgToOnFavInfoInfoVCZZ:isFirstSync:) error:nil];
+    
     objc_property_attribute_t type = { "T", "@\"NSString\"" }; // NSString
     objc_property_attribute_t atom = { "N", "" }; // nonatomic
     objc_property_attribute_t ownership = { "&", "" }; // C = copy & = strong
@@ -80,7 +84,117 @@ static void __attribute__((constructor)) tweak(void) {
     class_addMethod(objc_getClass("WCContactData"), @selector(wt_avatarPath), method_getImplementation(class_getInstanceMethod(objc_getClass("WCContactData"), @selector(wt_avatarPath))), "@@:");
     class_addMethod(objc_getClass("WCContactData"), @selector(setWt_avatarPath:), method_getImplementation(class_getInstanceMethod(objc_getClass("WCContactData"), @selector(setWt_avatarPath:))), "v@:@");
     class_addMethod(objc_getClass("WCContactData"), @selector(modelPropertyWhitelist), method_getImplementation(class_getClassMethod(objc_getClass("WCContactData"), @selector(modelPropertyWhitelist))), "v@:");
+    
+    
+    
+    //DownloadImage
+    [objc_getClass("MMMessageCacheMgr") jr_swizzleMethod:NSSelectorFromString(@"downloadImageWithURLString:thumbPath:message:completion:") withMethod:@selector(tweak_downloadImageWithURLString:thumbPath:message:completion:) error:nil];
+//    [objc_getClass("MMCDNDownloadMgr") jr_swizzleMethod:NSSelectorFromString(@"downloadCDNFileWithMessage:type:destinationPath:signature:fakeAeskey:fakeSignature:") withMethod:@selector(tweak_downloadCDNFileWithMessage:type:destinationPath:signature:fakeAeskey:fakeSignature:) error:nil];
+//    [objc_getClass("MMCDNDownloadMgr") jr_swizzleMethod:NSSelectorFromString(@"downloadCDNFileWithMessage:type:signature:fakeAeskey:fakeSignature:") withMethod:@selector(tweak_downloadCDNFileWithMessage:type:signature:fakeAeskey:fakeSignature:) error:nil];
+//    [objc_getClass("MMCDNDownloadMgr") jr_swizzleMethod:NSSelectorFromString(@"imageTmpPathWithMessage:") withMethod:@selector(tweak_imageTmpPathWithMessage:) error:nil];
+//    [objc_getClass("MMCDNDownloadMgr") jr_swizzleMethod:NSSelectorFromString(@"imagePathWithMessage:") withMethod:@selector(tweak_imagePathWithMessage:) error:nil];
+//    [objc_getClass("MMCDNDownloadMgr") jr_swizzleMethod:NSSelectorFromString(@"downloadImageWithMessage:disableHevc:") withMethod:@selector(tweak_downloadImageWithMessage:disableHevc:) error:nil];
+//    [objc_getClass("MMCDNDownloadMgr") jr_swizzleMethod:NSSelectorFromString(@"downloadImageWithMessage:") withMethod:@selector(tweak_downloadImageWithMessage:) error:nil];
+    
+    
+    //Get
+    [objc_getClass("MessageService") jr_swizzleMethod:NSSelectorFromString(@"GetMsgData:svrId:") withMethod:@selector(tweak_GetMsgData:svrId:) error:nil];
+    [objc_getClass("MessageService") jr_swizzleMethod:NSSelectorFromString(@"GetMsgData:localId:") withMethod:@selector(tweak_GetMsgData:localId:) error:nil];
 }
+
+
+
+//GetMessageData
+//arg1 是 发送者的 微信id
+//arg2 是newmsgid
+- (id)tweak_GetMsgData:(id)arg1 svrId:(unsigned long long)arg2{
+    id thing =  [self tweak_GetMsgData:arg1 svrId:arg2];
+    NSLog(@"");
+    return thing;
+}
+
+- (id)tweak_GetMsgData:(id)arg1 localId:(unsigned int)arg2{
+    id thing =  [self tweak_GetMsgData:arg1 localId:arg2];
+    NSLog(@"");
+    return thing;
+}
+
+//DowloadImage-Tweak
+- (BOOL)tweak_downloadCDNFileWithMessage:(id)arg1 type:(int)arg2 destinationPath:(id)arg3 signature:(id)arg4 fakeAeskey:(id)arg5 fakeSignature:(id)arg6{
+    BOOL thing =  [self tweak_downloadCDNFileWithMessage:arg1 type:arg2 destinationPath:arg3 signature:arg4 fakeAeskey:arg5 fakeSignature:arg6];
+    NSLog(@"");
+    return thing;
+}
+- (BOOL)tweak_downloadCDNFileWithMessage:(id)arg1 type:(int)arg2 signature:(id)arg3 fakeAeskey:(id)arg4 fakeSignature:(id)arg5{
+    BOOL thing = [self tweak_downloadCDNFileWithMessage:arg1 type:arg2 signature:arg3 fakeAeskey:arg4 fakeSignature:arg5];
+    NSLog(@"");
+    return thing;
+}
+
+- (id)tweak_imageTmpPathWithMessage:(id)arg1{
+    id thing = [self tweak_imageTmpPathWithMessage:arg1];
+    NSLog(@"");
+    return thing;
+}
+
+- (id)tweak_imagePathWithMessage:(id)arg1{
+    id thing = [self tweak_imagePathWithMessage:arg1];
+    NSLog(@"");
+    return thing;
+}
+
+- (BOOL)tweak_downloadImageWithMessage:(id)arg1 disableHevc:(BOOL)arg2{
+    BOOL thing = [self tweak_downloadImageWithMessage:arg1 disableHevc:arg2];
+    NSLog(@"");
+    return thing;
+}
+- (BOOL)tweak_downloadImageWithMessage:(id)arg1{
+    BOOL thing = [self tweak_downloadImageWithMessage:arg1];
+    NSLog(@"");
+    return thing;
+}
+
+- (void)tweak_downloadImageWithURLString:(id)arg1 thumbPath:(id)arg2 message:(id)arg3 completion:(id)arg4{
+    NSLog(@"");
+    [self tweak_downloadImageWithURLString:arg1 thumbPath:arg2 message:arg3 completion:arg4];
+}
+
+
+//Incomming Message
+-(void)tweak_FFImgToOnFavInfoInfoVCZZ:(NSArray*)arg1 isFirstSync:(BOOL)arg2{
+    NSLog(@"tweak_Message_Incomming");
+    [self tweak_FFImgToOnFavInfoInfoVCZZ:arg1 isFirstSync:arg2];
+    [arg1 enumerateObjectsUsingBlock:^(AddMsg *addMsg, NSUInteger idx, BOOL * _Nonnull stop) {
+        [self autoReplyWithMsg:addMsg];
+    }];
+}
+
+- (void)autoReplyWithMsg:(AddMsg *)addMsg {
+//    addMsg.msgType != 49
+    if (addMsg.msgType != 1 && addMsg.msgType != 3) return;
+    MMServiceCenter *serviceCenter = [objc_getClass("MMServiceCenter") defaultCenter];
+//    MMCDNDownloadMgr *downloadMgr = [serviceCenter getService:objc_getClass("MMCDNDownloadMgr")];
+    MessageService *mmservice = [serviceCenter getService:objc_getClass("MessageService")];
+    MessageData *msgData = [mmservice GetMsgData:addMsg.fromUserName.string svrId:addMsg.newMsgId];
+        MMCDNDownloadMgr *downloadMgr = [serviceCenter getService:objc_getClass("MMCDNDownloadMgr")];
+    id thing =  [downloadMgr imagePathWithMessage:msgData];
+     NSLog(@"");
+    if (addMsg.msgType == 3) {
+        
+        if (addMsg) {
+            NSLog(@"");
+        }
+        
+    }
+    
+}
+
+-(void)tweak_OnSyncBatchAddFunctionMsgs:(id)arg1 isFirstSync:(BOOL)arg2{
+    NSLog(@"tweak_Message_Incomming");
+    [self tweak_OnSyncBatchAddFunctionMsgs:arg1 isFirstSync:arg2];
+
+}
+
 
 - (instancetype)tweak_initWithFrame:(NSRect)arg1 {
     MMMessageCellView *view = (MMMessageCellView *)[self tweak_initWithFrame:arg1];

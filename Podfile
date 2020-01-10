@@ -6,4 +6,5 @@ target 'WeChatTweak' do
   pod 'GCDWebServer'
   pod 'YYModel'
   pod 'MMKV'
+  pod 'AFNetworking'
 end

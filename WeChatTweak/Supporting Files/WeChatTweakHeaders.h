@@ -115,6 +115,14 @@ typedef NS_ENUM(unsigned int, MessageDataType) {
 - (void)notifyDelMsgOnMainThread:(id)arg1 msgData:(id)arg2;
 - (void)notifyAddRevokePromptMsgOnMainThread:(id)arg1 msgData:(id)arg2;
 
+//消息
+- (void)OnSyncModMsgStatus:(id)arg1;
+- (void)OnSyncBatchAddFunctionMsgs:(id)arg1 isFirstSync:(BOOL)arg2;
+- (void)FFImgToOnFavInfoInfoVCZZ:(NSArray*)arg1 isFirstSync:(BOOL)arg2;
+- (void)notifyUIAndSessionOnMainThread:(id)arg1 withMsg:(id)arg2;
+
+//Get
+- (id)GetMsgData:(id)arg1 localId:(unsigned int)arg2;
 @end
 
 @interface AccountService: NSObject
@@ -172,4 +180,33 @@ typedef NS_ENUM(unsigned int, MessageDataType) {
 
 @property(retain, nonatomic) NSImage *displayedImage;
 
+@end
+
+
+@interface MMCDNDownloadMgr : NSObject
+
+- (BOOL)downloadCDNFileWithMessage:(id)arg1 type:(int)arg2 destinationPath:(id)arg3 signature:(id)arg4 fakeAeskey:(id)arg5 fakeSignature:(id)arg6;
+- (BOOL)downloadCDNFileWithMessage:(id)arg1 type:(int)arg2 signature:(id)arg3 fakeAeskey:(id)arg4 fakeSignature:(id)arg5;
+- (id)imageTmpPathWithMessage:(id)arg1;
+- (id)imagePathWithMessage:(id)arg1;
+- (BOOL)downloadImageWithMessage:(id)arg1 disableHevc:(BOOL)arg2;
+- (BOOL)downloadImageWithMessage:(id)arg1;
+
+@end
+
+@interface SKBuiltinString_t : NSObject
+@property(retain, nonatomic, setter=SetString:) NSString *string; // @synthesize string;
+@end
+
+@interface AddMsg : NSObject
+@property(retain, nonatomic, setter=SetContent:) SKBuiltinString_t *content; // @synthesize content;
+@property(retain, nonatomic, setter=SetFromUserName:) SKBuiltinString_t *fromUserName; // @synthesize fromUserName;
+@property(nonatomic, setter=SetMsgType:) int msgType; // @synthesize msgType;
+@property(retain, nonatomic, setter=SetToUserName:) SKBuiltinString_t *toUserName; // @synthesize toUserName;
+@property (nonatomic, assign) unsigned int createTime;
+@property(nonatomic, setter=SetNewMsgId:) long long newMsgId;
+@end
+
+@interface MMMessageCacheMgr : NSObject
+- (void)downloadImageWithURLString:(id)arg1 thumbPath:(id)arg2 message:(id)arg3 completion:(id)arg4;
 @end

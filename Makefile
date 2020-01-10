@@ -1,4 +1,5 @@
-APP_PATH=/Applications/WeChat.app/Contents/MacOS
+# APP_PATH=/Applications/WeChat.app/Contents/MacOS
+APP_PATH=/Volumes/FileSys/WechatTweak/TargetApp/zz.app/Contents/MacOS
 APP_NAME=WeChat
 BACKUP_NAME=WeChat.bak
 FRAMEWORK_PATH=WeChatTweak.framework
@@ -14,6 +15,7 @@ install::
     	exit 1;\
 	fi
 	@if ! [ -f "${APP_PATH}/${APP_NAME}" ]; then\
+		echo "${APP_PATH}/${APP_NAME}";\
 		echo "Can not find the WeChat.";\
 		exit 1;\
 	fi

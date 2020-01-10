@@ -138,3 +138,5 @@ iOSInjectionProject/
 # Bundler gems
 
 Gems/
+
+/TargetApp

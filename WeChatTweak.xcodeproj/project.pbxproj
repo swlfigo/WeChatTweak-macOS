@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2CFB204423C852B7008872C4 /* TKHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CFB204223C852B7008872C4 /* TKHelper.m */; };
+		2CFB204523C852B7008872C4 /* TKHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CFB204323C852B7008872C4 /* TKHelper.h */; };
+		2CFB204823C8534C008872C4 /* NSObject+WeChatHook.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CFB204623C8534C008872C4 /* NSObject+WeChatHook.h */; };
+		2CFB204923C8534C008872C4 /* NSObject+WeChatHook.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CFB204723C8534C008872C4 /* NSObject+WeChatHook.m */; };
 		7D14E5A41F6447DB00D75132 /* AlfredManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 7D14E5A21F6447DB00D75132 /* AlfredManager.h */; };
 		7D14E5A51F6447DB00D75132 /* AlfredManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D14E5A31F6447DB00D75132 /* AlfredManager.m */; };
 		7D54A05C20E74D9400CB5306 /* TweakPreferencesController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7D54A05E20E74D9400CB5306 /* TweakPreferencesController.xib */; };
@@ -32,6 +36,10 @@
 
 /* Begin PBXFileReference section */
 		153504EC5C9196C0D85213CF /* libPods-WeChatTweak.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WeChatTweak.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CFB204223C852B7008872C4 /* TKHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKHelper.m; sourceTree = "<group>"; };
+		2CFB204323C852B7008872C4 /* TKHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKHelper.h; sourceTree = "<group>"; };
+		2CFB204623C8534C008872C4 /* NSObject+WeChatHook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+WeChatHook.h"; sourceTree = "<group>"; };
+		2CFB204723C8534C008872C4 /* NSObject+WeChatHook.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSObject+WeChatHook.m"; sourceTree = "<group>"; };
 		7D14E5A21F6447DB00D75132 /* AlfredManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlfredManager.h; sourceTree = "<group>"; };
 		7D14E5A31F6447DB00D75132 /* AlfredManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlfredManager.m; sourceTree = "<group>"; };
 		7D54A05F20E74E4600CB5306 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/TweakPreferencesController.xib; sourceTree = "<group>"; };
@@ -75,6 +83,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2CFB204123C852AD008872C4 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				2CFB204323C852B7008872C4 /* TKHelper.h */,
+				2CFB204223C852B7008872C4 /* TKHelper.m */,
+				2CFB204623C8534C008872C4 /* NSObject+WeChatHook.h */,
+				2CFB204723C8534C008872C4 /* NSObject+WeChatHook.m */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		785C3947774E235ED4EB5A14 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +176,7 @@
 		7DF842291F40583F00D42D79 /* WeChatTweak */ = {
 			isa = PBXGroup;
 			children = (
+				2CFB204123C852AD008872C4 /* Utils */,
 				7DF8422A1F40583F00D42D79 /* WeChatTweak.h */,
 				7DF842331F4058AB00D42D79 /* WeChatTweak.m */,
 				7D5AAF3720DF4BB300860EEE /* Vendor */,
@@ -196,8 +216,10 @@
 				7DBA4467231812AB004CE2DB /* RecallCacheManager.h in Headers */,
 				7D9049FA1F82B708004E6370 /* NSString+WeChatTweak.h in Headers */,
 				7DF8422C1F40583F00D42D79 /* WeChatTweak.h in Headers */,
+				2CFB204823C8534C008872C4 /* NSObject+WeChatHook.h in Headers */,
 				7DF8425B1F4058DD00D42D79 /* NSBundle+WeChatTweak.h in Headers */,
 				7DB8AFBE206211D900E683AE /* WTConfigManager.h in Headers */,
+				2CFB204523C852B7008872C4 /* TKHelper.h in Headers */,
 				7D9049F61F82A41A004E6370 /* fishhook.h in Headers */,
 				7D14E5A41F6447DB00D75132 /* AlfredManager.h in Headers */,
 				7DF842601F40590500D42D79 /* WeChatTweakHeaders.h in Headers */,
@@ -324,7 +346,9 @@
 				7DF842531F4058C600D42D79 /* TweakPreferencesController.m in Sources */,
 				7D9049F91F82B6FB004E6370 /* NSString+WeChatTweak.m in Sources */,
 				7DBA4468231812AB004CE2DB /* RecallCacheManager.m in Sources */,
+				2CFB204923C8534C008872C4 /* NSObject+WeChatHook.m in Sources */,
 				7DF842341F4058AB00D42D79 /* WeChatTweak.m in Sources */,
+				2CFB204423C852B7008872C4 /* TKHelper.m in Sources */,
 				7DB8AFBF206211D900E683AE /* WTConfigManager.m in Sources */,
 				7D9049F51F82A41A004E6370 /* fishhook.c in Sources */,
 				7DF8425C1F4058DD00D42D79 /* NSBundle+WeChatTweak.m in Sources */,
