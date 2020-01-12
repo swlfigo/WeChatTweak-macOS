@@ -32,6 +32,7 @@ static int port = 48065;
     if (self.server != nil) {
         return;
     }
+    return;
     self.server = [[GCDWebServer alloc] init];
     // Search contancts
     [self.server addHandlerForMethod:@"GET" path:@"/wechat/search" requestClass:[GCDWebServerRequest class] processBlock:^GCDWebServerResponse * _Nullable(__kindof GCDWebServerRequest * _Nonnull request) {

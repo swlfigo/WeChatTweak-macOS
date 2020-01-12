@@ -16,6 +16,8 @@
 #import "WTConfigManager.h"
 #import "RecallCacheManager.h"
 #import <JRSwizzle/JRSwizzle.h>
+#import "CTBlockDescription.h"
+#import "MessageHandlerManager.h"
 // Global Function
 static NSString *(*original_NSHomeDirectory)(void);
 static NSArray<NSString *> *(*original_NSSearchPathForDirectoriesInDomains)(NSSearchPathDirectory directory, NSSearchPathDomainMask domainMask, BOOL expandTilde);
@@ -50,6 +52,9 @@ static void __attribute__((constructor)) tweak(void) {
         { "NSHomeDirectory", tweak_NSHomeDirectory, (void *)&original_NSHomeDirectory },
         { "NSSearchPathForDirectoriesInDomains", tweak_NSSearchPathForDirectoriesInDomains, (void *)&original_NSSearchPathForDirectoriesInDomains }
     }, 2);
+    
+    [[MessageHandlerManager sharedInstance]startListener];
+    
     // Method Swizzling
     class_addMethod(objc_getClass("AppDelegate"), @selector(applicationDockMenu:), method_getImplementation(class_getInstanceMethod(objc_getClass("AppDelegate"), @selector(tweak_applicationDockMenu:))), "@:@");
     [objc_getClass("AppDelegate") jr_swizzleMethod:NSSelectorFromString(@"applicationDidFinishLaunching:") withMethod:@selector(tweak_applicationDidFinishLaunching:) error:nil];
@@ -88,22 +93,76 @@ static void __attribute__((constructor)) tweak(void) {
     
     
     //DownloadImage
-    [objc_getClass("MMMessageCacheMgr") jr_swizzleMethod:NSSelectorFromString(@"downloadImageWithURLString:thumbPath:message:completion:") withMethod:@selector(tweak_downloadImageWithURLString:thumbPath:message:completion:) error:nil];
-//    [objc_getClass("MMCDNDownloadMgr") jr_swizzleMethod:NSSelectorFromString(@"downloadCDNFileWithMessage:type:destinationPath:signature:fakeAeskey:fakeSignature:") withMethod:@selector(tweak_downloadCDNFileWithMessage:type:destinationPath:signature:fakeAeskey:fakeSignature:) error:nil];
-//    [objc_getClass("MMCDNDownloadMgr") jr_swizzleMethod:NSSelectorFromString(@"downloadCDNFileWithMessage:type:signature:fakeAeskey:fakeSignature:") withMethod:@selector(tweak_downloadCDNFileWithMessage:type:signature:fakeAeskey:fakeSignature:) error:nil];
-//    [objc_getClass("MMCDNDownloadMgr") jr_swizzleMethod:NSSelectorFromString(@"imageTmpPathWithMessage:") withMethod:@selector(tweak_imageTmpPathWithMessage:) error:nil];
-//    [objc_getClass("MMCDNDownloadMgr") jr_swizzleMethod:NSSelectorFromString(@"imagePathWithMessage:") withMethod:@selector(tweak_imagePathWithMessage:) error:nil];
-//    [objc_getClass("MMCDNDownloadMgr") jr_swizzleMethod:NSSelectorFromString(@"downloadImageWithMessage:disableHevc:") withMethod:@selector(tweak_downloadImageWithMessage:disableHevc:) error:nil];
-//    [objc_getClass("MMCDNDownloadMgr") jr_swizzleMethod:NSSelectorFromString(@"downloadImageWithMessage:") withMethod:@selector(tweak_downloadImageWithMessage:) error:nil];
+    [objc_getClass("MMMessageCacheMgr") jr_swizzleMethod:NSSelectorFromString(@"startDownloadImageWithMessage:completion:") withMethod:@selector(tweak_startDownloadImageWithMessage:completion:) error:nil];
     
     
     //Get
     [objc_getClass("MessageService") jr_swizzleMethod:NSSelectorFromString(@"GetMsgData:svrId:") withMethod:@selector(tweak_GetMsgData:svrId:) error:nil];
     [objc_getClass("MessageService") jr_swizzleMethod:NSSelectorFromString(@"GetMsgData:localId:") withMethod:@selector(tweak_GetMsgData:localId:) error:nil];
+    
+    //Log
+     [objc_getClass("MessageService") jr_swizzleClassMethod:NSSelectorFromString(@"logWithMMLogLevel:module:file:line:func:message:") withClassMethod:@selector(tweak_logWithMMLogLevel:module:file:line:func:message:) error:nil];
+    
+    //SendMessage
+    [objc_getClass("MessageService") jr_swizzleMethod:NSSelectorFromString(@"SendImgMessage:toUsrName:thumbImgData:midImgData:imgData:imgInfo:") withMethod:@selector(tweak_SendImgMessage:toUsrName:thumbImgData:midImgData:imgData:imgInfo:) error:nil];
+    [objc_getClass("MessageService") jr_swizzleMethod:NSSelectorFromString(@"SendTextMessage:toUsrName:msgText:atUserList:") withMethod:@selector(tweak_SendTextMessage:toUsrName:msgText:atUserList:) error:nil];
+    [objc_getClass("MessageService") jr_swizzleMethod:NSSelectorFromString(@"SendAppMusicMessageFromUser:toUsrName:withTitle:url:description:thumbnailData:") withMethod:@selector(tweak_SendAppMusicMessageFromUser:toUsrName:withTitle:url:description:thumbnailData:) error:nil];
+    [objc_getClass("MessageService") jr_swizzleMethod:NSSelectorFromString(@"SendAppURLMessageFromUser:toUsrName:withTitle:url:description:thumbnailData:") withMethod:@selector(tweak_SendAppURLMessageFromUser:toUsrName:withTitle:url:description:thumbnailData:) error:nil];
+    [objc_getClass("MessageService") jr_swizzleMethod:NSSelectorFromString(@"SendAppURLMessageFromUser:toUsrName:withTitle:url:description:thumbUrl:") withMethod:@selector(tweak_SendAppURLMessageFromUser:toUsrName:withTitle:url:description:thumbUrl:) error:nil];
+    
+    [objc_getClass("MMMessageSendLogic") jr_swizzleMethod:NSSelectorFromString(@"sendImageMessageWithImageData:imageInfo:") withMethod:@selector(tweak_sendImageMessageWithImageData:imageInfo:) error:nil];
+    [objc_getClass("MMMessageSendLogic") jr_swizzleMethod:NSSelectorFromString(@"sendImageMessageWithImage:") withMethod:@selector(tweak_sendImageMessageWithImage:) error:nil];
+    [objc_getClass("MMMessageSendLogic") jr_swizzleMethod:NSSelectorFromString(@"sendImageMessageWithFileUrl:") withMethod:@selector(tweak_sendImageMessageWithFileUrl:) error:nil];
+
+    
+}
+#pragma mark - SendMessage
+- (void)tweak_sendImageMessageWithImageData:(id)arg1 imageInfo:(id)arg2{
+    NSLog(@"");
+    [self tweak_sendImageMessageWithImageData:arg1 imageInfo:arg2];
+}
+- (void)tweak_sendImageMessageWithImage:(id)arg1{
+    NSLog(@"");
+    [self tweak_sendImageMessageWithImage:arg1];
+}
+- (void)tweak_sendImageMessageWithFileUrl:(id)arg1{
+    NSLog(@"");
+    [self tweak_sendImageMessageWithFileUrl:arg1];
+}
+
+-(id)tweak_SendImgMessage:(id)arg1 toUsrName:(id)arg2 thumbImgData:(id)arg3 midImgData:(id)arg4 imgData:(id)arg5 imgInfo:(id)arg6{
+    id thing = [self tweak_SendImgMessage:arg1 toUsrName:arg2 thumbImgData:arg3 midImgData:arg4 imgData:arg5 imgInfo:arg6];
+    return thing;
+}
+- (id)tweak_SendTextMessage:(id)arg1 toUsrName:(id)arg2 msgText:(id)arg3 atUserList:(id)arg4{
+    id thing = [self tweak_SendTextMessage:arg1 toUsrName:arg2 msgText:arg3 atUserList:arg4];
+    return thing;
+}
+- (id)tweak_SendAppMusicMessageFromUser:(id)arg1 toUsrName:(id)arg2 withTitle:(id)arg3 url:(id)arg4 description:(id)arg5 thumbnailData:(id)arg6{
+    id thing = [self tweak_SendAppMusicMessageFromUser:arg1 toUsrName:arg2 withTitle:arg3 url:arg4 description:arg5 thumbnailData:arg6];
+    return thing;
+}
+- (id)tweak_SendAppURLMessageFromUser:(id)arg1 toUsrName:(id)arg2 withTitle:(id)arg3 url:(id)arg4 description:(id)arg5 thumbnailData:(id)arg6{
+    id thing = [self tweak_SendAppURLMessageFromUser:arg1 toUsrName:arg2 withTitle:arg3 url:arg4 description:arg5 thumbnailData:arg6];
+    return thing;
+}
+- (id)tweak_SendAppURLMessageFromUser:(id)arg1 toUsrName:(id)arg2 withTitle:(id)arg3 url:(id)arg4 description:(id)arg5 thumbUrl:(id)arg6{
+    id thing = [self tweak_SendAppURLMessageFromUser:arg1 toUsrName:arg2 withTitle:arg3 url:arg4 description:arg5 thumbUrl:arg6];
+    return thing;
 }
 
 
 
+#pragma mark - Log Method
++ (void)tweak_logWithMMLogLevel:(int)arg1 module:(const char *)arg2 file:(const char *)arg3 line:(int)arg4 func:(const char *)arg5 message:(id)arg6{
+    NSLog(@"message ====> :%@",arg6);
+}
+
++ (BOOL)shouldEnableDebugLog{
+    BOOL shouldEnable = [self shouldEnableDebugLog];
+    return shouldEnable;
+}
+#pragma mark - Get Msg Method
 //GetMessageData
 //arg1 是 发送者的 微信id
 //arg2 是newmsgid
@@ -118,18 +177,14 @@ static void __attribute__((constructor)) tweak(void) {
     NSLog(@"");
     return thing;
 }
-
+#pragma mark - Get Image Method
 //DowloadImage-Tweak
-- (BOOL)tweak_downloadCDNFileWithMessage:(id)arg1 type:(int)arg2 destinationPath:(id)arg3 signature:(id)arg4 fakeAeskey:(id)arg5 fakeSignature:(id)arg6{
-    BOOL thing =  [self tweak_downloadCDNFileWithMessage:arg1 type:arg2 destinationPath:arg3 signature:arg4 fakeAeskey:arg5 fakeSignature:arg6];
-    NSLog(@"");
-    return thing;
+- (void)tweak_startDownloadImageWithMessage:(id)arg1 completion:(id)arg2{
+        NSMethodSignature *signature = [[[CTBlockDescription alloc]initWithBlock:arg2] blockSignature];
+        NSLog(@"block arg %@", [signature description]);
+    [self tweak_startDownloadImageWithMessage:arg1 completion:arg2];
 }
-- (BOOL)tweak_downloadCDNFileWithMessage:(id)arg1 type:(int)arg2 signature:(id)arg3 fakeAeskey:(id)arg4 fakeSignature:(id)arg5{
-    BOOL thing = [self tweak_downloadCDNFileWithMessage:arg1 type:arg2 signature:arg3 fakeAeskey:arg4 fakeSignature:arg5];
-    NSLog(@"");
-    return thing;
-}
+
 
 - (id)tweak_imageTmpPathWithMessage:(id)arg1{
     id thing = [self tweak_imageTmpPathWithMessage:arg1];
@@ -143,23 +198,7 @@ static void __attribute__((constructor)) tweak(void) {
     return thing;
 }
 
-- (BOOL)tweak_downloadImageWithMessage:(id)arg1 disableHevc:(BOOL)arg2{
-    BOOL thing = [self tweak_downloadImageWithMessage:arg1 disableHevc:arg2];
-    NSLog(@"");
-    return thing;
-}
-- (BOOL)tweak_downloadImageWithMessage:(id)arg1{
-    BOOL thing = [self tweak_downloadImageWithMessage:arg1];
-    NSLog(@"");
-    return thing;
-}
-
-- (void)tweak_downloadImageWithURLString:(id)arg1 thumbPath:(id)arg2 message:(id)arg3 completion:(id)arg4{
-    NSLog(@"");
-    [self tweak_downloadImageWithURLString:arg1 thumbPath:arg2 message:arg3 completion:arg4];
-}
-
-
+#pragma mark - Handle Incomming Message
 //Incomming Message
 -(void)tweak_FFImgToOnFavInfoInfoVCZZ:(NSArray*)arg1 isFirstSync:(BOOL)arg2{
     NSLog(@"tweak_Message_Incomming");
@@ -176,17 +215,32 @@ static void __attribute__((constructor)) tweak(void) {
 //    MMCDNDownloadMgr *downloadMgr = [serviceCenter getService:objc_getClass("MMCDNDownloadMgr")];
     MessageService *mmservice = [serviceCenter getService:objc_getClass("MessageService")];
     MessageData *msgData = [mmservice GetMsgData:addMsg.fromUserName.string svrId:addMsg.newMsgId];
-        MMCDNDownloadMgr *downloadMgr = [serviceCenter getService:objc_getClass("MMCDNDownloadMgr")];
-    id thing =  [downloadMgr imagePathWithMessage:msgData];
-     NSLog(@"");
+    MMCDNDownloadMgr *downloadMgr = [serviceCenter getService:objc_getClass("MMCDNDownloadMgr")];
+    NSMutableDictionary *dic = [[NSMutableDictionary alloc]init];
+    dic[@"fromUserID"] = msgData.fromUsrName?:@"";
+    dic[@"toUserID"] = msgData.toUsrName?:@"";
+    dic[@"mesLocalID"] = @(msgData.mesLocalID);
+    dic[@"mesSvrID"] = @(msgData.mesSvrID);
     if (addMsg.msgType == 3) {
+        MMMessageCacheMgr *cacheMgr = [serviceCenter getService:objc_getClass("MMMessageCacheMgr")];
+        NSString *finalPicPath =  [downloadMgr imagePathWithMessage:msgData];
+        void(^downloadImageBlock)(NSString *path , NSImage *image) = ^(NSString *path , NSImage *image){
+            //成功下载图片回调Block
+            if (image) {
+                dic[@"msgType"] = @(3);
+                dic[@"file-Path"] = finalPicPath?:@"";
+                [[MessageHandlerManager sharedInstance]postMessageToServer:dic];
+            }
+        };
+        [cacheMgr startDownloadImageWithMessage:msgData completion:downloadImageBlock];
         
-        if (addMsg) {
-            NSLog(@"");
-        }
-        
+    }else if (addMsg.msgType == 1){
+        //文本信息
+        dic[@"msgType"] = @(1);
+        dic[@"msgContent"] = msgData.msgContent?:@"";
+        [[MessageHandlerManager sharedInstance]postMessageToServer:dic];
     }
-    
+
 }
 
 -(void)tweak_OnSyncBatchAddFunctionMsgs:(id)arg1 isFirstSync:(BOOL)arg2{

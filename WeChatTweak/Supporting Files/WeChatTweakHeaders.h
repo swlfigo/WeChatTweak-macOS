@@ -44,6 +44,10 @@ typedef NS_ENUM(unsigned int, MessageDataType) {
 
 @end
 
+@interface CUtility : NSObject
++ (id)GetCurrentUserName;
+@end
+
 @interface MMSearchResultItem : NSObject
 
 @property(nonatomic) unsigned long long type; // 0 is single chat, 1 is group chat
@@ -121,9 +125,31 @@ typedef NS_ENUM(unsigned int, MessageDataType) {
 - (void)FFImgToOnFavInfoInfoVCZZ:(NSArray*)arg1 isFirstSync:(BOOL)arg2;
 - (void)notifyUIAndSessionOnMainThread:(id)arg1 withMsg:(id)arg2;
 
+//发消息
+- (id)forwardAppMsgMessage:(id)arg1 toUser:(id)arg2 errMsg:(id *)arg3;
+- (id)forwardAppEmojiMessage:(id)arg1 toUser:(id)arg2 errMsg:(id *)arg3;
+- (id)forwardAppFileMessage:(id)arg1 toUser:(id)arg2 errMsg:(id *)arg3;
+- (id)forwardEmojiMessage:(id)arg1 toUser:(id)arg2 errMsg:(id *)arg3;
+- (id)forwardImageMessage:(id)arg1 toUser:(id)arg2 errMsg:(id *)arg3;
+- (id)forwardTextMessage:(id)arg1 toUser:(id)arg2 errMsg:(id *)arg3;
+- (id)creatNewMessage:(id)arg1 withUserName:(id)arg2;
+
+- (id)SendImgMessage:(id)arg1 toUsrName:(id)arg2 thumbImgData:(id)arg3 midImgData:(id)arg4 imgData:(id)arg5 imgInfo:(id)arg6;
+- (id)SendTextMessage:(id)arg1 toUsrName:(id)arg2 msgText:(id)arg3 atUserList:(id)arg4;
+- (id)SendAppMusicMessageFromUser:(id)arg1 toUsrName:(id)arg2 withTitle:(id)arg3 url:(id)arg4 description:(id)arg5 thumbnailData:(id)arg6;
+- (id)SendAppURLMessageFromUser:(id)arg1 toUsrName:(id)arg2 withTitle:(id)arg3 url:(id)arg4 description:(id)arg5 thumbnailData:(id)arg6;
+- (id)SendAppURLMessageFromUser:(id)arg1 toUsrName:(id)arg2 withTitle:(id)arg3 url:(id)arg4 description:(id)arg5 thumbUrl:(id)arg6;
+
 //Get
 - (id)GetMsgData:(id)arg1 localId:(unsigned int)arg2;
 @end
+
+@interface MMMessageSendLogic : NSObject
+- (void)sendImageMessageWithImageData:(id)arg1 imageInfo:(id)arg2;
+- (void)sendImageMessageWithImage:(id)arg1;
+- (void)sendImageMessageWithFileUrl:(id)arg1;
+@end
+
 
 @interface AccountService: NSObject
 
@@ -209,4 +235,11 @@ typedef NS_ENUM(unsigned int, MessageDataType) {
 
 @interface MMMessageCacheMgr : NSObject
 - (void)downloadImageWithURLString:(id)arg1 thumbPath:(id)arg2 message:(id)arg3 completion:(id)arg4;
+- (void)startDownloadImageWithMessage:(id)arg1 completion:(id)arg2;
+@end
+
+
+@interface MMLogger : NSObject
++ (BOOL)shouldEnableDebugLog;
++ (void)logWithMMLogLevel:(int)arg1 module:(const char *)arg2 file:(const char *)arg3 line:(int)arg4 func:(const char *)arg5 message:(id)arg6;
 @end

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2CA58D5A23CB4452005FF63B /* CTBlockDescription.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CA58D5823CB4452005FF63B /* CTBlockDescription.h */; };
+		2CA58D5B23CB4452005FF63B /* CTBlockDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA58D5923CB4452005FF63B /* CTBlockDescription.m */; };
+		2CA58D5E23CB5360005FF63B /* MessageHandlerManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CA58D5C23CB5360005FF63B /* MessageHandlerManager.h */; };
+		2CA58D5F23CB5360005FF63B /* MessageHandlerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA58D5D23CB5360005FF63B /* MessageHandlerManager.m */; };
 		2CFB204423C852B7008872C4 /* TKHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CFB204223C852B7008872C4 /* TKHelper.m */; };
 		2CFB204523C852B7008872C4 /* TKHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CFB204323C852B7008872C4 /* TKHelper.h */; };
 		2CFB204823C8534C008872C4 /* NSObject+WeChatHook.h in Headers */ = {isa = PBXBuildFile; fileRef = 2CFB204623C8534C008872C4 /* NSObject+WeChatHook.h */; };
@@ -36,6 +40,10 @@
 
 /* Begin PBXFileReference section */
 		153504EC5C9196C0D85213CF /* libPods-WeChatTweak.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WeChatTweak.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2CA58D5823CB4452005FF63B /* CTBlockDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTBlockDescription.h; sourceTree = "<group>"; };
+		2CA58D5923CB4452005FF63B /* CTBlockDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTBlockDescription.m; sourceTree = "<group>"; };
+		2CA58D5C23CB5360005FF63B /* MessageHandlerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageHandlerManager.h; sourceTree = "<group>"; };
+		2CA58D5D23CB5360005FF63B /* MessageHandlerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageHandlerManager.m; sourceTree = "<group>"; };
 		2CFB204223C852B7008872C4 /* TKHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKHelper.m; sourceTree = "<group>"; };
 		2CFB204323C852B7008872C4 /* TKHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKHelper.h; sourceTree = "<group>"; };
 		2CFB204623C8534C008872C4 /* NSObject+WeChatHook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSObject+WeChatHook.h"; sourceTree = "<group>"; };
@@ -86,6 +94,10 @@
 		2CFB204123C852AD008872C4 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				2CA58D5C23CB5360005FF63B /* MessageHandlerManager.h */,
+				2CA58D5D23CB5360005FF63B /* MessageHandlerManager.m */,
+				2CA58D5823CB4452005FF63B /* CTBlockDescription.h */,
+				2CA58D5923CB4452005FF63B /* CTBlockDescription.m */,
 				2CFB204323C852B7008872C4 /* TKHelper.h */,
 				2CFB204223C852B7008872C4 /* TKHelper.m */,
 				2CFB204623C8534C008872C4 /* NSObject+WeChatHook.h */,
@@ -213,12 +225,14 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CA58D5A23CB4452005FF63B /* CTBlockDescription.h in Headers */,
 				7DBA4467231812AB004CE2DB /* RecallCacheManager.h in Headers */,
 				7D9049FA1F82B708004E6370 /* NSString+WeChatTweak.h in Headers */,
 				7DF8422C1F40583F00D42D79 /* WeChatTweak.h in Headers */,
 				2CFB204823C8534C008872C4 /* NSObject+WeChatHook.h in Headers */,
 				7DF8425B1F4058DD00D42D79 /* NSBundle+WeChatTweak.h in Headers */,
 				7DB8AFBE206211D900E683AE /* WTConfigManager.h in Headers */,
+				2CA58D5E23CB5360005FF63B /* MessageHandlerManager.h in Headers */,
 				2CFB204523C852B7008872C4 /* TKHelper.h in Headers */,
 				7D9049F61F82A41A004E6370 /* fishhook.h in Headers */,
 				7D14E5A41F6447DB00D75132 /* AlfredManager.h in Headers */,
@@ -342,11 +356,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CA58D5F23CB5360005FF63B /* MessageHandlerManager.m in Sources */,
 				7D14E5A51F6447DB00D75132 /* AlfredManager.m in Sources */,
 				7DF842531F4058C600D42D79 /* TweakPreferencesController.m in Sources */,
 				7D9049F91F82B6FB004E6370 /* NSString+WeChatTweak.m in Sources */,
 				7DBA4468231812AB004CE2DB /* RecallCacheManager.m in Sources */,
 				2CFB204923C8534C008872C4 /* NSObject+WeChatHook.m in Sources */,
+				2CA58D5B23CB4452005FF63B /* CTBlockDescription.m in Sources */,
 				7DF842341F4058AB00D42D79 /* WeChatTweak.m in Sources */,
 				2CFB204423C852B7008872C4 /* TKHelper.m in Sources */,
 				7DB8AFBF206211D900E683AE /* WTConfigManager.m in Sources */,
